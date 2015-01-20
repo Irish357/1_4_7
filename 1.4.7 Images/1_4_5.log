@@ -1,0 +1,6 @@
+# IPython log file
+
+%cd "H:\CSE\1.4\1.4.5\1.4.5 Images"
+round_corners_of_all_images()
+%run H:/CSE/1.4/1.4.5/mask.py
+round_corners_of_all_images()
