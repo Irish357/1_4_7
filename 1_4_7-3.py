@@ -17,27 +17,30 @@ for n in range(len(image_list)):
     a list with a  PIL.Image object for each image file in root_directory, and
     a list with a string filename for each image file in root_directory
     """
-    
-    if directory == None:
+ directory = os.getcwd()
+if directory == None:
         directory = os.getcwd() # Use working directory if unspecified
         
-    image_list = [] # Initialize aggregaotrs
-    file_list = []
+    # Create a new directory 'modified'
+new_directory = os.path.join(directory, 'modified')
+try:
+        os.mkdir(new_directory)
+except OSError:
+        pass # if the directory already exists, proceed  
     
-    directory_list = os.listdir(directory) # Get list of files
-    for entry in directory_list:
-        absolute_filename = os.path.join(directory, entry)
-        try:
-            image = PIL.Image.open(absolute_filename)
-            file_list += [entry]
-            image_list += [image]
-        except IOError:
-            pass # do nothing with errors tying to open non-images
-    return image_list, file_list
-          
-# Open the files in the same directory as the Python script
-directory = os.path.dirname(os.path.abspath(__file__))  
-student_file = os.path.join(directory, '1.4.7 Images')
+    #load all the images
+image_list, file_list = get_images(directory)  
+
+    #go through the images and save modified versions
+for n in range(len(image_list)):
+        # Parse the filename
+        filename, filetype = file_list[n].split('.')
+        
+        # Round the corners with radius = 30% of short side
+        new_image = round_corners(image_list[n],.30)
+        #save the altered image, suing PNG to retain transparency
+        new_image_filename = os.path.join(new_directory, filename + '.png')
+        new_image.save(new_image_filename) 
 
 # Open and show the student image in a new Figure window
 student_img = PIL.Image.open(student_file)
